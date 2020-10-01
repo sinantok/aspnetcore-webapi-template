@@ -8,7 +8,6 @@ namespace Models.ResponseModels
     {
         public BaseResponse()
         {
-            Errors = new List<string>();
         }
         public BaseResponse(T data, string message = null)
         {
@@ -18,11 +17,11 @@ namespace Models.ResponseModels
         public BaseResponse(string message)
         {
             Message = message;
+            Succeeded = false;
         }
-        public bool Succeeded => Errors.Count == 0;
+        public bool Succeeded;
         public string Message { get; set; }
-
-        public List<string> Errors = new List<string>();
+        public List<string> Errors;
         public T Data { get; set; }
     }
 }

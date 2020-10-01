@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Core\Core.csproj" />
     <ProjectReference Include="..\..\Libraries\Identity\Identity.csproj" />
+    <ProjectReference Include="..\..\Libraries\Models\Models.csproj" />
   </ItemGroup>
 
 

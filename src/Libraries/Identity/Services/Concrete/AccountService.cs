@@ -1,4 +1,5 @@
-﻿using Identity.Models;
+﻿using Core.Exceptions;
+using Identity.Models;
 using Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -37,17 +39,16 @@ namespace Identity.Services.Concrete
             ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
             if(user == null)
             {
-                return null; //exeption middleware eklenecek
+                throw new ApiException($"You are not registered with '{request.Email}'.");
             }
             SignInResult signInResult = await _signInManager.PasswordSignInAsync(user, request.Password, false, lockoutOnFailure: false);
             if(!signInResult.Succeeded)
             {
-                return null;
+                throw new ApiException($"Invalid Credentials for '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
             }
             if(!user.EmailConfirmed)
             {
-                //account is not confirmed for user.email
-                return null;
+                throw new ApiException($"Account Not Confirmed for '{request.Email}'.");
             }
             JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user, ipAddress);
             AuthenticationResponse response = new AuthenticationResponse();

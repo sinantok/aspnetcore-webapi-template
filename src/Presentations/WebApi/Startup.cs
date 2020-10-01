@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Identity;
+using WebApi.Extensions;
 
 namespace WebApi
 {
@@ -45,6 +46,7 @@ namespace WebApi
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseErrorHandlingMiddleware();
 
             app.UseEndpoints(endpoints =>
             {
