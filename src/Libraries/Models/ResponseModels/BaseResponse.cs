@@ -4,23 +4,25 @@ using System.Text;
 
 namespace Models.ResponseModels
 {
-    public class BaseRespons<T>
+    public class BaseResponse<T>
     {
-        public BaseRespons()
+        public BaseResponse()
         {
+            Errors = new List<string>();
         }
-        public BaseRespons(T data, string message = null)
+        public BaseResponse(T data, string message = null)
         {
             Message = message;
             Data = data;
         }
-        public BaseRespons(string message)
+        public BaseResponse(string message)
         {
             Message = message;
         }
         public bool Succeeded => Errors.Count == 0;
         public string Message { get; set; }
-        public List<string> Errors { get; set; }
+
+        public List<string> Errors = new List<string>();
         public T Data { get; set; }
     }
 }

@@ -70,14 +70,14 @@ namespace Identity
                         context.HandleResponse();
                         context.Response.StatusCode = 401;
                         context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new BaseRespons<string>("You are not Authorized"));
+                        var result = JsonConvert.SerializeObject(new BaseResponse<string>("You are not Authorized"));
                         return context.Response.WriteAsync(result);
                     },
                     OnForbidden = context =>
                     {
                         context.Response.StatusCode = 403;
                         context.Response.ContentType = "application/json";
-                        var result = JsonConvert.SerializeObject(new BaseRespons<string>("You are not authorized to access this resource"));
+                        var result = JsonConvert.SerializeObject(new BaseResponse<string>("You are not authorized to access this resource"));
                         return context.Response.WriteAsync(result);
                     },
                 };
