@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Models.ResponseModels;
+using Models.Settings;
 
 namespace Identity
 {

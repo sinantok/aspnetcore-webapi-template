@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Identity.Models
+namespace Models.Settings
 {
     public class JWTSettings
     {

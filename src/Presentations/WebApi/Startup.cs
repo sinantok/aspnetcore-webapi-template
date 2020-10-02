@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Identity;
 using WebApi.Extensions;
+using Core;
 
 namespace WebApi
 {
@@ -28,6 +29,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddIdentity(Configuration);
+            services.AddSharedServices(Configuration);
 
             services.AddControllers();
         }
