@@ -32,6 +32,12 @@ namespace WebApi.Controllers
             return Ok(await _accountService.RegisterAsync(request, uri));
         }
 
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmailAsync([FromQuery] string userId, [FromQuery] string code)
+        {
+            return Ok(await _accountService.ConfirmEmailAsync(userId, code));
+        }
+
         private string GenerateIPAddress()
         {
             if (Request.Headers.ContainsKey("X-Forwarded-For"))

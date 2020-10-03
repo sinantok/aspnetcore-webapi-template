@@ -72,6 +72,21 @@ namespace Identity.Services.Concrete
             return new BaseResponse<AuthenticationResponse>(response, $"Authenticated {user.UserName}");
         }
 
+        public async Task<BaseResponse<string>> ConfirmEmailAsync(string userId, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+            {
+                return new BaseResponse<string>(user.Id, message: $"Account Confirmed for {user.Email}. You can now use the /api/Account/authenticate endpoint.");
+            }
+            else
+            {
+                throw new ApiException($"An error occured while confirming {user.Email}.") { StatusCode = (int)HttpStatusCode.InternalServerError };
+            }
+        }
+
         public async Task<BaseResponse<string>> RegisterAsync(RegisterRequest request, string origin)
         {
             ApplicationUser findUser = await _userManager.FindByNameAsync(request.UserName);
@@ -101,7 +116,7 @@ namespace Identity.Services.Concrete
             }
             else
             {
-                throw new ApiException($"{result.Errors}");
+                throw new ApiException($"{result.Errors}") { StatusCode = (int)HttpStatusCode.InternalServerError };
             }
         }
 
