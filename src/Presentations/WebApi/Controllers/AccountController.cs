@@ -24,6 +24,14 @@ namespace WebApi.Controllers
         {
             return Ok(await _accountService.AuthenticateAsync(request, GenerateIPAddress()));
         }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterAsync(RegisterRequest request)
+        {
+            var uri = $"{Request.Scheme}://{Request.Host.Value}";
+            return Ok(await _accountService.RegisterAsync(request, uri));
+        }
+
         private string GenerateIPAddress()
         {
             if (Request.Headers.ContainsKey("X-Forwarded-For"))

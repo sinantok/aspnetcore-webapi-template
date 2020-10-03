@@ -1,10 +1,14 @@
 ﻿using Core.Exceptions;
+using Core.Interfaces;
 using Identity.Models;
 using Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Models.DTOs.Account;
+using Models.DTOs.Email;
+using Models.Enums;
 using Models.ResponseModels;
 using Models.Settings;
 using System;
@@ -25,31 +29,34 @@ namespace Identity.Services.Concrete
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JWTSettings _jwtSettings;
+        private readonly IEmailService _emailService;
         public AccountService(UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IOptions<JWTSettings> jwtSettings,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            IEmailService emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _jwtSettings = jwtSettings.Value;
+            _emailService = emailService;
         }
         public async Task<BaseResponse<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request, string ipAddress)
         {
             ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
-            if(user == null)
+            if (user == null)
             {
                 throw new ApiException($"You are not registered with '{request.Email}'.");
             }
             SignInResult signInResult = await _signInManager.PasswordSignInAsync(user, request.Password, false, lockoutOnFailure: false);
-            if(!signInResult.Succeeded)
+            if (!signInResult.Succeeded)
             {
                 throw new ApiException($"Invalid Credentials for '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
             }
-            if(!user.EmailConfirmed)
+            if (!user.EmailConfirmed)
             {
-                throw new ApiException($"Account Not Confirmed for '{request.Email}'.");
+                throw new ApiException($"Account Not Confirmed for '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
             }
             JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user, ipAddress);
             AuthenticationResponse response = new AuthenticationResponse();
@@ -63,6 +70,39 @@ namespace Identity.Services.Concrete
             var refreshToken = GenerateRefreshToken(ipAddress);
             response.RefreshToken = refreshToken.Token;
             return new BaseResponse<AuthenticationResponse>(response, $"Authenticated {user.UserName}");
+        }
+
+        public async Task<BaseResponse<string>> RegisterAsync(RegisterRequest request, string origin)
+        {
+            ApplicationUser findUser = await _userManager.FindByNameAsync(request.UserName);
+            if (findUser != null)
+            {
+                throw new ApiException($"Username '{request.UserName}' is already taken.") { StatusCode = (int)HttpStatusCode.BadRequest };
+            }
+            findUser = await _userManager.FindByEmailAsync(request.Email);
+            if (findUser != null)
+            {
+                throw new ApiException($"Email {request.Email } is already registered.") { StatusCode = (int)HttpStatusCode.BadRequest };
+            }
+            ApplicationUser newUser = new ApplicationUser
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                UserName = request.UserName
+            };
+            var result = await _userManager.CreateAsync(newUser, request.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(newUser, Roles.Basic.ToString());
+                var verificationUri = await SendVerificationEmail(newUser, origin);
+
+                return new BaseResponse<string>(newUser.Id, message: $"User Registered. Please confirm your account by visiting this URL {verificationUri}");
+            }
+            else
+            {
+                throw new ApiException($"{result.Errors}");
+            }
         }
 
         private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user, string ipAddress)
@@ -118,6 +158,26 @@ namespace Identity.Services.Concrete
             rngCryptoServiceProvider.GetBytes(randomBytes);
             // convert random bytes to hex string
             return BitConverter.ToString(randomBytes).Replace("-", "");
+        }
+
+        private async Task<string> SendVerificationEmail(ApplicationUser newUser, string origin)
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var route = "api/account/confirm-email/";
+            var _enpointUri = new Uri(string.Concat($"{origin}/", route));
+            var verificationUri = QueryHelpers.AddQueryString(_enpointUri.ToString(), "userId", newUser.Id);
+            verificationUri = QueryHelpers.AddQueryString(verificationUri, "code", code);
+
+            await _emailService.SendAsync(new EmailRequest()
+            {
+                From = "sinantok@outlook.com",
+                To = newUser.Email,
+                Body = $"Please confirm your account by visiting this URL {verificationUri}",
+                Subject = "Confirm Registration"
+            });
+
+            return verificationUri;
         }
     }
 }

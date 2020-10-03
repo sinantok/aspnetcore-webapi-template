@@ -10,8 +10,13 @@ namespace Core
     {
         public static void AddSharedServices(this IServiceCollection services, IConfiguration config)
         {
+            #region Configure
             services.Configure<MailSettings>(config.GetSection("MailSettings"));
+            #endregion
+
+            #region Services
             services.AddTransient<IEmailService, EmailService>();
+            #endregion
         }
     }
 }

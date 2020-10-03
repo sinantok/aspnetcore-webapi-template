@@ -8,17 +8,18 @@ using System;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using Core.Exceptions;
+using Microsoft.Extensions.Options;
 
 namespace Core.Services
 {
     public class EmailService : IEmailService
     {
-        public MailSettings _mailSettings { get; }
-        public ILogger<EmailService> _logger { get; }
-
-        public EmailService(MailSettings mailSettings, ILogger<EmailService> logger)
+        private readonly MailSettings _mailSettings;
+        private readonly ILogger<EmailService> _logger;
+      
+        public EmailService(IOptions<MailSettings> mailSettings, ILogger<EmailService> logger)
         {
-            _mailSettings = mailSettings;
+            _mailSettings = mailSettings.Value;
             _logger = logger;
         }
 
