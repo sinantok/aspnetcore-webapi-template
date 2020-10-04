@@ -39,11 +39,17 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest model)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request)
         {
             var uri = $"{Request.Scheme}://{Request.Host.Value}";
-            await _accountService.ForgotPassword(model, uri);
+            await _accountService.ForgotPassword(request, uri);
             return Ok();
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
+        {
+            return Ok(await _accountService.ResetPassword(request));
         }
 
         private string GenerateIPAddress()

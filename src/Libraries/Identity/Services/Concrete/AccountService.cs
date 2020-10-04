@@ -87,9 +87,9 @@ namespace Identity.Services.Concrete
             }
         }
 
-        public async Task ForgotPassword(ForgotPasswordRequest model, string uri)
+        public async Task ForgotPassword(ForgotPasswordRequest request, string uri)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null) return;
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -98,7 +98,7 @@ namespace Identity.Services.Concrete
             var emailRequest = new EmailRequest()
             {
                 Body = $"You have to send a request to the 'api/account/reset-password/' service with reset token - {code}",
-                To = model.Email,
+                To = request.Email,
                 Subject = "Reset Password",
             };
             await _emailService.SendAsync(emailRequest);
@@ -134,6 +134,22 @@ namespace Identity.Services.Concrete
             else
             {
                 throw new ApiException($"{result.Errors}") { StatusCode = (int)HttpStatusCode.InternalServerError };
+            }
+        }
+
+        public async Task<BaseResponse<string>> ResetPassword(ResetPasswordRequest request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null) throw new ApiException($"You are not registered with '{request.Email}'.");
+
+            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
+            if (result.Succeeded)
+            {
+                return new BaseResponse<string>(request.Email, message: $"Password Resetted.");
+            }
+            else
+            {
+                throw new ApiException($"Error occured while reseting the password. Please try again.");
             }
         }
 
