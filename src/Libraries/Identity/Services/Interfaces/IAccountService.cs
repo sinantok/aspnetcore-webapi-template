@@ -10,7 +10,8 @@ namespace Identity.Services.Interfaces
     public interface IAccountService
     {
         Task<BaseResponse<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request, string ipAddress);
-        Task<BaseResponse<string>> RegisterAsync(RegisterRequest request, string origin);
+        Task<BaseResponse<string>> RegisterAsync(RegisterRequest request, string uri);
         Task<BaseResponse<string>> ConfirmEmailAsync(string userId, string code);
+        Task ForgotPassword(ForgotPasswordRequest model, string uri);
     }
 }

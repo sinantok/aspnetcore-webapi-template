@@ -39,7 +39,6 @@ namespace Core.Services
                 smtp.Authenticate(_mailSettings.SmtpUser, _mailSettings.SmtpPass);
                 await smtp.SendAsync(email);
                 smtp.Disconnect(true);
-
             }
             catch (Exception ex)
             {

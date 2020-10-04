@@ -38,6 +38,14 @@ namespace WebApi.Controllers
             return Ok(await _accountService.ConfirmEmailAsync(userId, code));
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest model)
+        {
+            var uri = $"{Request.Scheme}://{Request.Host.Value}";
+            await _accountService.ForgotPassword(model, uri);
+            return Ok();
+        }
+
         private string GenerateIPAddress()
         {
             if (Request.Headers.ContainsKey("X-Forwarded-For"))

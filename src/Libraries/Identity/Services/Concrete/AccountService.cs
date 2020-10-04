@@ -87,7 +87,24 @@ namespace Identity.Services.Concrete
             }
         }
 
-        public async Task<BaseResponse<string>> RegisterAsync(RegisterRequest request, string origin)
+        public async Task ForgotPassword(ForgotPasswordRequest model, string uri)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null) return;
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var route = "api/account/reset-password/";
+            var _enpointUri = new Uri(string.Concat($"{uri}/", route));
+            var emailRequest = new EmailRequest()
+            {
+                Body = $"You have to send a request to the 'api/account/reset-password/' service with reset token - {code}",
+                To = model.Email,
+                Subject = "Reset Password",
+            };
+            await _emailService.SendAsync(emailRequest);
+        }
+
+        public async Task<BaseResponse<string>> RegisterAsync(RegisterRequest request, string uri)
         {
             ApplicationUser findUser = await _userManager.FindByNameAsync(request.UserName);
             if (findUser != null)
@@ -110,7 +127,7 @@ namespace Identity.Services.Concrete
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(newUser, Roles.Basic.ToString());
-                var verificationUri = await SendVerificationEmail(newUser, origin);
+                var verificationUri = await SendVerificationEmail(newUser, uri);
 
                 return new BaseResponse<string>(newUser.Id, message: $"User Registered. Please confirm your account by visiting this URL {verificationUri}");
             }
@@ -175,12 +192,12 @@ namespace Identity.Services.Concrete
             return BitConverter.ToString(randomBytes).Replace("-", "");
         }
 
-        private async Task<string> SendVerificationEmail(ApplicationUser newUser, string origin)
+        private async Task<string> SendVerificationEmail(ApplicationUser newUser, string uri)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var route = "api/account/confirm-email/";
-            var _enpointUri = new Uri(string.Concat($"{origin}/", route));
+            var _enpointUri = new Uri(string.Concat($"{uri}/", route));
             var verificationUri = QueryHelpers.AddQueryString(_enpointUri.ToString(), "userId", newUser.Id);
             verificationUri = QueryHelpers.AddQueryString(verificationUri, "code", code);
 
