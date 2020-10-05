@@ -1,4 +1,5 @@
 ﻿using Core.Exceptions;
+using Core.Helpers;
 using Core.Interfaces;
 using Identity.Models;
 using Identity.Services.Interfaces;
@@ -42,33 +43,35 @@ namespace Identity.Services.Concrete
             _jwtSettings = jwtSettings.Value;
             _emailService = emailService;
         }
-        public async Task<BaseResponse<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request, string ipAddress)
+        public async Task<BaseResponse<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request)
         {
             ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                throw new ApiException($"You are not registered with '{request.Email}'.");
-            }
-            SignInResult signInResult = await _signInManager.PasswordSignInAsync(user, request.Password, false, lockoutOnFailure: false);
-            if (!signInResult.Succeeded)
-            {
-                throw new ApiException($"Invalid Credentials for '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
+                throw new ApiException($"You are not registered with '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
             }
             if (!user.EmailConfirmed)
             {
                 throw new ApiException($"Account Not Confirmed for '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
             }
+
+            SignInResult signInResult = await _signInManager.PasswordSignInAsync(user, request.Password, false, lockoutOnFailure: false);
+            if (!signInResult.Succeeded)
+            {
+                throw new ApiException($"Invalid Credentials for '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
+            }
+
+            string ipAddress = IpHelper.GetIpAddress();
             JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user, ipAddress);
             AuthenticationResponse response = new AuthenticationResponse();
             response.Id = user.Id.ToString();
             response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             response.Email = user.Email;
             response.UserName = user.UserName;
-            var rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+            IList<string> rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
             response.Roles = rolesList.ToList();
             response.IsVerified = user.EmailConfirmed;
-            var refreshToken = GenerateRefreshToken(ipAddress);
-            response.RefreshToken = refreshToken.Token;
+            response.RefreshToken = await GenerateRefreshToken(user); ;
             return new BaseResponse<AuthenticationResponse>(response, $"Authenticated {user.UserName}");
         }
 
@@ -87,7 +90,7 @@ namespace Identity.Services.Concrete
             }
         }
 
-        public async Task ForgotPassword(ForgotPasswordRequest request, string uri)
+        public async Task ForgotPasswordAsync(ForgotPasswordRequest request, string uri)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null) return;
@@ -102,6 +105,41 @@ namespace Identity.Services.Concrete
                 Subject = "Reset Password",
             };
             await _emailService.SendAsync(emailRequest);
+        }
+
+        public async Task<BaseResponse<AuthenticationResponse>> RefreshTokenAsync(RefreshTokenRequest request)
+        {
+            ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
+            if (user == null)
+            {
+                throw new ApiException($"You are not registered with '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
+            }
+            if (!user.EmailConfirmed)
+            {
+                throw new ApiException($"Account Not Confirmed for '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
+            }
+
+            string refreshToken = await _userManager.GetAuthenticationTokenAsync(user, "MyApp", "RefreshToken");
+            bool isValid = await _userManager.VerifyUserTokenAsync(user, "MyApp", "RefreshToken", request.Token);
+            if (!refreshToken.Equals(request.Token) || !isValid)
+            {
+                throw new ApiException($"Your token is not valid.") { StatusCode = (int)HttpStatusCode.BadRequest };
+            }
+
+            string ipAddress = IpHelper.GetIpAddress();
+            JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user, ipAddress);
+            AuthenticationResponse response = new AuthenticationResponse();
+            response.Id = user.Id.ToString();
+            response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+            response.Email = user.Email;
+            response.UserName = user.UserName;
+            IList<string> rolesList = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+            response.Roles = rolesList.ToList();
+            response.IsVerified = user.EmailConfirmed;
+            response.RefreshToken = await GenerateRefreshToken(user);
+
+            await _signInManager.SignInAsync(user, false);
+            return new BaseResponse<AuthenticationResponse>(response, $"Authenticated {user.UserName}");
         }
 
         public async Task<BaseResponse<string>> RegisterAsync(RegisterRequest request, string uri)
@@ -137,7 +175,7 @@ namespace Identity.Services.Concrete
             }
         }
 
-        public async Task<BaseResponse<string>> ResetPassword(ResetPasswordRequest request)
+        public async Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null) throw new ApiException($"You are not registered with '{request.Email}'.");
@@ -188,15 +226,16 @@ namespace Identity.Services.Concrete
             return jwtSecurityToken;
         }
 
-        private RefreshToken GenerateRefreshToken(string ipAddress)
+        private async Task<string> GenerateRefreshToken(ApplicationUser user)
         {
-            return new RefreshToken
+            await _userManager.RemoveAuthenticationTokenAsync(user, "MyApp", "RefreshToken");
+            var newRefreshToken = await _userManager.GenerateUserTokenAsync(user, "MyApp", "RefreshToken");
+            IdentityResult result = await _userManager.SetAuthenticationTokenAsync(user, "MyApp", "RefreshToken", newRefreshToken);
+            if (!result.Succeeded)
             {
-                Token = RandomTokenString(),
-                Expires = DateTime.UtcNow.AddDays(7),
-                Created = DateTime.UtcNow,
-                CreatedByIp = ipAddress
-            };
+                throw new ApiException($"An error occured while set refreshtoken.") { StatusCode = (int)HttpStatusCode.InternalServerError };
+            }
+            return newRefreshToken;
         }
 
         private string RandomTokenString()

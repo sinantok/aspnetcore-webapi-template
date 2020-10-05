@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> AuthenticateAsync(AuthenticationRequest request)
         {
-            return Ok(await _accountService.AuthenticateAsync(request, GenerateIPAddress()));
+            return Ok(await _accountService.AuthenticateAsync(request));
         }
 
         [HttpPost("register")]
@@ -39,17 +39,23 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordRequest request)
+        public async Task<IActionResult> ForgotPasswordAsync(ForgotPasswordRequest request)
         {
             var uri = $"{Request.Scheme}://{Request.Host.Value}";
-            await _accountService.ForgotPassword(request, uri);
+            await _accountService.ForgotPasswordAsync(request, uri);
             return Ok();
         }
 
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordRequest request)
+        public async Task<IActionResult> ResetPasswordAsync(ResetPasswordRequest request)
         {
-            return Ok(await _accountService.ResetPassword(request));
+            return Ok(await _accountService.ResetPasswordAsync(request));
+        }
+
+        [HttpPost("refreshtoken")]
+        public async Task<IActionResult> RefreshTokenAsync(RefreshTokenRequest request)
+        {
+            return Ok(await _accountService.RefreshTokenAsync(request));
         }
 
         private string GenerateIPAddress()
