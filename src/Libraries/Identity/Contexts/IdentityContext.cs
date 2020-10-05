@@ -8,7 +8,11 @@ using System.Text;
 
 namespace Identity.Contexts
 {
-    public class IdentityContext : IdentityDbContext<ApplicationUser>
+    public class IdentityContext
+    : IdentityDbContext<
+        ApplicationUser, ApplicationRole, int,
+        ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin,
+        ApplicationRoleClaim, ApplicationUserToken>
     {
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
@@ -23,32 +27,32 @@ namespace Identity.Contexts
                 entity.ToTable(name: "User");
             });
 
-            builder.Entity<IdentityRole>(entity =>
+            builder.Entity<ApplicationRole>(entity =>
             {
                 entity.ToTable(name: "Role");
             });
-            builder.Entity<IdentityUserRole<string>>(entity =>
+            builder.Entity<ApplicationUserRole>(entity =>
             {
                 entity.ToTable("UserRoles");
             });
 
-            builder.Entity<IdentityUserClaim<string>>(entity =>
+            builder.Entity<ApplicationUserClaim>(entity =>
             {
                 entity.ToTable("UserClaims");
             });
 
-            builder.Entity<IdentityUserLogin<string>>(entity =>
+            builder.Entity<ApplicationUserLogin>(entity =>
             {
                 entity.ToTable("UserLogins");
             });
 
-            builder.Entity<IdentityRoleClaim<string>>(entity =>
+            builder.Entity<ApplicationRoleClaim>(entity =>
             {
                 entity.ToTable("RoleClaims");
 
             });
 
-            builder.Entity<IdentityUserToken<string>>(entity =>
+            builder.Entity<ApplicationUserToken>(entity =>
             {
                 entity.ToTable("UserTokens");
             });

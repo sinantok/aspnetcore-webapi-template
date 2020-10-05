@@ -24,7 +24,7 @@ namespace WebApi
                 try
                 {
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
                     await DefaultRoles.SeedAsync(userManager, roleManager);
                     await DefaultSuperAdmin.SeedAsync(userManager, roleManager);
                 }

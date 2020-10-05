@@ -26,12 +26,12 @@ namespace Identity.Services.Concrete
     public class AccountService : IAccountService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JWTSettings _jwtSettings;
         private readonly IEmailService _emailService;
         public AccountService(UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
+            RoleManager<ApplicationRole> roleManager,
             IOptions<JWTSettings> jwtSettings,
             SignInManager<ApplicationUser> signInManager,
             IEmailService emailService)
@@ -60,7 +60,7 @@ namespace Identity.Services.Concrete
             }
             JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user, ipAddress);
             AuthenticationResponse response = new AuthenticationResponse();
-            response.Id = user.Id;
+            response.Id = user.Id.ToString();
             response.JWToken = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             response.Email = user.Email;
             response.UserName = user.UserName;
@@ -79,7 +79,7 @@ namespace Identity.Services.Concrete
             var result = await _userManager.ConfirmEmailAsync(user, code);
             if (result.Succeeded)
             {
-                return new BaseResponse<string>(user.Id, message: $"Account Confirmed for {user.Email}. You can now use the /api/Account/authenticate endpoint.");
+                return new BaseResponse<string>(user.Id.ToString(), message: $"Account Confirmed for {user.Email}. You can now use the /api/Account/authenticate endpoint.");
             }
             else
             {
@@ -129,7 +129,7 @@ namespace Identity.Services.Concrete
                 await _userManager.AddToRoleAsync(newUser, Roles.Basic.ToString());
                 var verificationUri = await SendVerificationEmail(newUser, uri);
 
-                return new BaseResponse<string>(newUser.Id, message: $"User Registered. Please confirm your account by visiting this URL {verificationUri}");
+                return new BaseResponse<string>(newUser.Id.ToString(), message: $"User Registered. Please confirm your account by visiting this URL {verificationUri}");
             }
             else
             {
@@ -170,7 +170,7 @@ namespace Identity.Services.Concrete
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("uid", user.Id),
+                new Claim("uid", user.Id.ToString()),
                 new Claim("ip", ipAddress)
             }
             .Union(userClaims)
@@ -214,7 +214,7 @@ namespace Identity.Services.Concrete
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var route = "api/account/confirm-email/";
             var _enpointUri = new Uri(string.Concat($"{uri}/", route));
-            var verificationUri = QueryHelpers.AddQueryString(_enpointUri.ToString(), "userId", newUser.Id);
+            var verificationUri = QueryHelpers.AddQueryString(_enpointUri.ToString(), "userId", newUser.Id.ToString());
             verificationUri = QueryHelpers.AddQueryString(verificationUri, "code", code);
 
             await _emailService.SendAsync(new EmailRequest()
