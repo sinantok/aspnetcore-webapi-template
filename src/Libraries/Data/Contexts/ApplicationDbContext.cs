@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Data.Mapping;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Data.Contexts
@@ -15,6 +18,19 @@ namespace Data.Contexts
         {
             //TODO Mapping
             base.OnModelCreating(modelBuilder);
+        }
+
+        public void RegisterEntityMapping(ModelBuilder modelBuilder)
+        {
+            var typeConfigurations = Assembly.GetExecutingAssembly().GetTypes().Where(type =>
+                (type.BaseType?.IsGenericType ?? false) &&
+                (type.BaseType.GetGenericTypeDefinition() == typeof(MappingEntityTypeConfiguration<>))
+            );
+            foreach (var item in typeConfigurations)
+            {
+                var configuration = (IMappingConfiguration)Activator.CreateInstance(item);
+                configuration.ApplyConfiguration(modelBuilder);
+            }
         }
 
         public virtual new DbSet<TEntity> Set<TEntity>() where TEntity : class

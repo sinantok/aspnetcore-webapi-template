@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models.DbEntities
 {
-    public class Note : BaseEntitiy
+    public class Note : BaseEntity
     {
         public string Title { get; set; }
         public string Category { get; set; }
