@@ -1,9 +1,11 @@
 ﻿using Core.Interfaces;
 using Core.Services;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Data.Contexts;
 using Models.Settings;
 using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 namespace Core
 {
     public static class ServiceExtensions
@@ -17,6 +19,13 @@ namespace Core
             #region Services
             services.AddTransient<IEmailService, EmailService>();
             #endregion
+        }
+        public static void AddApplicationSqlServer(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddDbContext<ApplicationDbContext>(options => 
+            {
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            });
         }
     }
 }
