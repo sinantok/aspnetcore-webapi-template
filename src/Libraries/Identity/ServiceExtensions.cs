@@ -31,9 +31,9 @@ namespace Identity
             #endregion
 
             services.AddDbContext<IdentityContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("IdentityConnection"),
-                b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
+                options.UseSqlServer(
+                    configuration.GetConnectionString("IdentityConnection"),
+                    b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders()
                 .AddTokenProvider("MyApp", typeof(DataProtectorTokenProvider<ApplicationUser>));

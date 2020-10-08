@@ -6,6 +6,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Data.Repos;
+
 namespace Core
 {
     public static class ServiceExtensions
@@ -22,10 +24,15 @@ namespace Core
         }
         public static void AddApplicationSqlServer(this IServiceCollection services, IConfiguration config)
         {
-            services.AddDbContext<ApplicationDbContext>(options => 
+            services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
+            services.AddTransient<IDbContext, ApplicationDbContext>();
+        }
+        public static void AddRepoServices(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
     }
 }

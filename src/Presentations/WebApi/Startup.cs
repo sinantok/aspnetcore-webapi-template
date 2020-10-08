@@ -30,6 +30,8 @@ namespace WebApi
         {
             services.AddIdentity(Configuration);
             services.AddSharedServices(Configuration);
+            services.AddApplicationSqlServer(Configuration);
+            services.AddRepoServices(Configuration);
 
             services.AddControllers();
         }
