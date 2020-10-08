@@ -16,10 +16,9 @@ namespace Data.Mapping
             builder.Property(p => p.Title).HasMaxLength(255);
             builder.Property(p => p.Category).HasMaxLength(255);
             builder.Property(p => p.Description).HasMaxLength(255);
-            builder.Property(p => p.Owner).HasMaxLength(255);
+            builder.Property(p => p.OwnerEmail).HasMaxLength(255);
             builder.Property(p => p.CreateUTC).HasColumnType("DateTime").HasDefaultValueSql("GetUtcDate()");
             base.Configure(builder);
-
         }
     }
 }

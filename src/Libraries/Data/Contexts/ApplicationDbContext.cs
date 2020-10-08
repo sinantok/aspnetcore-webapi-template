@@ -16,7 +16,7 @@ namespace Data.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //TODO Mapping
+            RegisterEntityMapping(modelBuilder);
             base.OnModelCreating(modelBuilder);
         }
 
