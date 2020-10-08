@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Identity;
 using WebApi.Extensions;
 using Core;
+using WebApi.GraphQL;
 
 namespace WebApi
 {
@@ -33,6 +34,7 @@ namespace WebApi
             services.AddApplicationSqlServer(Configuration);
             services.AddRepoServices(Configuration);
             services.AddAppServices(Configuration);
+            services.AddGraphQLServices(Configuration);
 
             services.AddControllers();
         }
