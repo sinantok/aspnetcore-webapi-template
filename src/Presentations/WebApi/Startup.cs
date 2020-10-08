@@ -32,6 +32,7 @@ namespace WebApi
             services.AddSharedServices(Configuration);
             services.AddApplicationSqlServer(Configuration);
             services.AddRepoServices(Configuration);
+            services.AddAppServices(Configuration);
 
             services.AddControllers();
         }

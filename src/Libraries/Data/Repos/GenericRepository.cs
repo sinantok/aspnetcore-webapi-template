@@ -32,10 +32,10 @@ namespace Data.Repos
             }
         }
 
-        public void Delete(T entity)
+        public int Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            _context.SaveChanges();
+            return _context.SaveChanges();
         }
 
         public T Find(Expression<Func<T, bool>> match)

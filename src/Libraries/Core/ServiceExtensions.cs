@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Data.Repos;
+using Services.Interfaces;
+using Services.Concrete;
 
 namespace Core
 {
@@ -33,6 +35,10 @@ namespace Core
         public static void AddRepoServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        }
+        public static void AddAppServices(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddTransient<INoteService, NoteService>();
         }
     }
 }

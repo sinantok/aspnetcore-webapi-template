@@ -16,6 +16,6 @@ namespace Data.Repos
         T Insert(T entity);
         bool BulkInsert(List<T> entities);
         T Update(T entity);
-        void Delete(T entity);
+        int Delete(T entity);
     }
 }
