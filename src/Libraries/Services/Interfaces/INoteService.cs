@@ -10,7 +10,7 @@ namespace Services.Interfaces
         Note InsertNote(Note note);
         Note GetNoteById(int id);
         List<Note> GetNotesByCategory(string category);
-        List<Note> GetAllMyNotes();
+        List<Note> GetAllMyNotes(string ownerEmail);
         bool DeleteNote(int id);
     }
 }

@@ -27,9 +27,9 @@ namespace Services.Concrete
             return false;
         }
 
-        public List<Note> GetAllMyNotes()
+        public List<Note> GetAllMyNotes(string ownerEmail)
         {
-            throw new NotImplementedException();
+            return _repository.FindAll(x => x.OwnerEmail.Equals(ownerEmail));
         }
 
         public Note GetNoteById(int id)

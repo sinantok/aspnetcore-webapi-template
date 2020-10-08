@@ -14,6 +14,8 @@ using Identity;
 using WebApi.Extensions;
 using Core;
 using WebApi.GraphQL;
+using Core.Interfaces;
+using WebApi.Services;
 
 namespace WebApi
 {
@@ -35,7 +37,7 @@ namespace WebApi
             services.AddRepoServices(Configuration);
             services.AddAppServices(Configuration);
             services.AddGraphQLServices(Configuration);
-
+            services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             services.AddControllers();
         }
 

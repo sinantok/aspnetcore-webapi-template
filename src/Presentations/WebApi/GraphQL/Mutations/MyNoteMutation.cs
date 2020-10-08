@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using Core.Interfaces;
+using GraphQL.Types;
 using Models.DbEntities;
 using Services.Interfaces;
 using WebApi.GraphQL.Types.Note;
@@ -7,7 +8,7 @@ namespace WebApi.GraphQL.Mutations
 {
     public class MyNoteMutation : ObjectGraphType
     {
-        public MyNoteMutation(INoteService _noteService)
+        public MyNoteMutation(INoteService noteService, IAuthenticatedUserService authenticatedUserService)
         {
             Field<NoteType>(
                 "addNote",
@@ -16,7 +17,8 @@ namespace WebApi.GraphQL.Mutations
                 resolve: context =>
                 {
                     Note note = context.GetArgument<Note>("note");
-                    return _noteService.InsertNote(note);
+                    note.OwnerEmail = authenticatedUserService.UserEmail;
+                    return noteService.InsertNote(note);
                 });
         }
     }

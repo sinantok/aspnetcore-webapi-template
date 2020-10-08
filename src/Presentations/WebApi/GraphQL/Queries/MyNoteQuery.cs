@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using Core.Interfaces;
+using GraphQL.Types;
 using Services.Interfaces;
 using WebApi.GraphQL.Types.Note;
 
@@ -6,11 +7,11 @@ namespace WebApi.GraphQL.Queries
 {
     public class MyNoteQuery : ObjectGraphType
     {
-        public MyNoteQuery(INoteService _noteService)
+        public MyNoteQuery(INoteService noteService, IAuthenticatedUserService _authenticatedUserService)
         {
             Field<ListGraphType<NoteType>>(
                 "my_all_notes",
-                resolve: context => _noteService.GetAllMyNotes());
+                resolve: context => noteService.GetAllMyNotes(_authenticatedUserService.UserEmail));
 
             Field<NoteType>(
                 "note_by_id",
@@ -18,7 +19,7 @@ namespace WebApi.GraphQL.Queries
                 resolve: context =>
                 {
                     int noteId = context.GetArgument<int>("id");
-                    return _noteService.GetNoteById(noteId);
+                    return noteService.GetNoteById(noteId);
                 });
         }
     }
