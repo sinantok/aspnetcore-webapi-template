@@ -97,10 +97,10 @@ namespace Identity.Services.Concrete
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var route = "api/account/reset-password/";
-            var _enpointUri = new Uri(string.Concat($"{uri}/", route));
+            var enpointUri = new Uri(string.Concat($"{uri}/", route));
             var emailRequest = new EmailRequest()
             {
-                Body = $"You have to send a request to the 'api/account/reset-password/' service with reset token - {code}",
+                Body = $"You have to send a request to the '{enpointUri}' service with reset token - {code}",
                 To = request.Email,
                 Subject = "Reset Password",
             };
