@@ -11,7 +11,7 @@ namespace WebApi.GraphQL.Mutations
         public MyNoteMutation(INoteService noteService, IAuthenticatedUserService authenticatedUserService)
         {
             Field<NoteType>(
-                "addNote",
+                name: "createNote",
                 arguments: new QueryArguments(
                     new QueryArgument<NonNullGraphType<NoteInputType>> { Name = "note" }),
                 resolve: context =>

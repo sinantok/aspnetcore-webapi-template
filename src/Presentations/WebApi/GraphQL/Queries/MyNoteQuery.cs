@@ -7,11 +7,11 @@ namespace WebApi.GraphQL.Queries
 {
     public class MyNoteQuery : ObjectGraphType
     {
-        public MyNoteQuery(INoteService noteService, IAuthenticatedUserService _authenticatedUserService)
+        public MyNoteQuery(INoteService noteService, IAuthenticatedUserService authenticatedUserService)
         {
             Field<ListGraphType<NoteType>>(
                 "my_all_notes",
-                resolve: context => noteService.GetAllMyNotes(_authenticatedUserService.UserEmail));
+                resolve: context => noteService.GetAllMyNotes(authenticatedUserService.UserEmail));
 
             Field<NoteType>(
                 "note_by_id",

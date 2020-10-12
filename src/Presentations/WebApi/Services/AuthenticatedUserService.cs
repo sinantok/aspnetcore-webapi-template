@@ -8,7 +8,7 @@ namespace WebApi.Services
     {
         public AuthenticatedUserService(IHttpContextAccessor httpContextAccessor)
         {
-            UserEmail = httpContextAccessor.HttpContext?.User?.FindFirstValue("email");
+            UserEmail = httpContextAccessor.HttpContext?.User?.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
         }
 
         public string UserEmail { get; }
