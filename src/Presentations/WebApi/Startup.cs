@@ -16,6 +16,7 @@ using Core;
 using WebApi.GraphQL;
 using Core.Interfaces;
 using WebApi.Services;
+using GraphiQl;
 
 namespace WebApi
 {
@@ -52,7 +53,7 @@ namespace WebApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseGraphiQl();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseErrorHandlingMiddleware();
