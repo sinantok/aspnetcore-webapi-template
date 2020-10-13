@@ -107,6 +107,18 @@ namespace Identity.Services.Concrete
             await _emailService.SendAsync(emailRequest);
         }
 
+        public async Task<BaseResponse<string>> LogoutAsync(string userEmail)
+        {
+            ApplicationUser user = await _userManager.FindByEmailAsync(userEmail);
+            if (user != null)
+            {
+                await _userManager.RemoveAuthenticationTokenAsync(user, "MyApp", "RefreshToken");
+            }
+            await _signInManager.SignOutAsync();
+
+            return new BaseResponse<string>(userEmail, message: $"Logout.");
+        }
+
         public async Task<BaseResponse<AuthenticationResponse>> RefreshTokenAsync(RefreshTokenRequest request)
         {
             ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);

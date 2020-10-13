@@ -15,5 +15,6 @@ namespace Identity.Services.Interfaces
         Task ForgotPasswordAsync(ForgotPasswordRequest request, string uri);
         Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordRequest request);
         Task<BaseResponse<AuthenticationResponse>> RefreshTokenAsync(RefreshTokenRequest request);
+        Task<BaseResponse<string>> LogoutAsync(string userEmail);
     }
 }

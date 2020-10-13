@@ -58,6 +58,12 @@ namespace WebApi.Controllers
             return Ok(await _accountService.RefreshTokenAsync(request));
         }
 
+        [HttpGet("logout")]
+        public async Task<IActionResult> LogoutAsync(string userEmail)
+        {
+            return Ok(await _accountService.LogoutAsync(userEmail));
+        }
+
         private string GenerateIPAddress()
         {
             if (Request.Headers.ContainsKey("X-Forwarded-For"))
