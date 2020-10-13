@@ -19,6 +19,19 @@ namespace WebApi.GraphQL.Mutations
                     note.OwnerEmail = authenticatedUserService.UserEmail;
                     return noteService.InsertNote(note);
                 });
+
+            Field<StringGraphType>(
+                name: "deleteNote",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<IntGraphType>> { Name = "id" }),
+                resolve: context =>
+                {
+                    int id = context.GetArgument<int>("id");
+                    bool res = noteService.DeleteNote(id);
+                    if (res)
+                        return "Note deleted";
+                    return "Try to delete again";
+                });
         }
     }
 }
