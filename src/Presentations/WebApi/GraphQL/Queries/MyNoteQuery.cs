@@ -7,11 +7,11 @@ namespace WebApi.GraphQL.Queries
 {
     public class MyNoteQuery : ObjectGraphType
     {
-        public MyNoteQuery(INoteService noteService, IAuthenticatedUserService authenticatedUserService)
+        public MyNoteQuery(INoteService noteService)
         {
             Field<ListGraphType<NoteType>>(
                 "my_all_notes",
-                resolve: context => noteService.GetAllMyNotes(authenticatedUserService.UserEmail));
+                resolve: context => noteService.GetAllMyNotes());
 
             Field<NoteType>(
                 "note_by_id",
@@ -20,6 +20,14 @@ namespace WebApi.GraphQL.Queries
                 {
                     int noteId = context.GetArgument<int>("id");
                     return noteService.GetNoteById(noteId);
+                });
+            Field<ListGraphType<NoteType>>(
+                "my_all_notes_by_category",
+                arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "category" }),
+                resolve: context =>
+                {
+                    string category = context.GetArgument<string>("category");
+                    return noteService.GetNotesByCategory(category);
                 });
         }
     }

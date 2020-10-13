@@ -17,6 +17,7 @@ using WebApi.GraphQL;
 using Core.Interfaces;
 using WebApi.Services;
 using GraphiQl;
+using Services.Interfaces;
 
 namespace WebApi
 {

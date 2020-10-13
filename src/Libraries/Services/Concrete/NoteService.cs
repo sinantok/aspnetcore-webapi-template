@@ -10,15 +10,18 @@ namespace Services.Concrete
     public class NoteService : INoteService
     {
         private readonly IGenericRepository<Note> _repository;
-
-        public NoteService(IGenericRepository<Note> repository)
+        private readonly IAuthenticatedUserService _authenticatedUserService;
+        private readonly string _userEmail;
+        public NoteService(IGenericRepository<Note> repository, IAuthenticatedUserService authenticatedUserService)
         {
             _repository = repository;
+            _authenticatedUserService = authenticatedUserService;
+            _userEmail = _authenticatedUserService.UserEmail;
         }
 
         public bool DeleteNote(int id)
         {
-            Note note = _repository.GetById(id);
+            Note note = _repository.Find(x => x.Id == id && x.OwnerEmail.Equals(_userEmail));
             if (note != null)
             {
                 if (_repository.Delete(note) > 0)
@@ -27,19 +30,19 @@ namespace Services.Concrete
             return false;
         }
 
-        public List<Note> GetAllMyNotes(string ownerEmail)
+        public List<Note> GetAllMyNotes()
         {
-            return _repository.FindAll(x => x.OwnerEmail.Equals(ownerEmail));
+            return _repository.FindAll(x => x.OwnerEmail.Equals(_userEmail));
         }
 
         public Note GetNoteById(int id)
         {
-            return _repository.GetById(id);
+            return _repository.Find(x => x.Id == id && x.OwnerEmail.Equals(_userEmail));
         }
 
         public List<Note> GetNotesByCategory(string category)
         {
-            throw new NotImplementedException();
+            return _repository.FindAll(x => x.Category.Equals(category) && x.OwnerEmail.Equals(_userEmail));
         }
 
         public Note InsertNote(Note note)
