@@ -11,12 +11,12 @@ namespace Identity.Seeds
 {
     public static class DefaultSuperAdmin
     {
-        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public static async Task SeedAsync(UserManager<ApplicationUser> userManager)
         {
             //Seed Default User
             var defaultUser = new ApplicationUser
             {
-                UserName = "superadmin",
+                UserName = "sinantok",
                 Email = "superadmin@gmail.com",
                 FirstName = "Sinan",
                 LastName = "Tok",
@@ -28,7 +28,7 @@ namespace Identity.Seeds
                 var user = await userManager.FindByEmailAsync(defaultUser.Email);
                 if (user == null)
                 {
-                    await userManager.CreateAsync(defaultUser, "123Pa$$word!");
+                    await userManager.CreateAsync(defaultUser, "123456");
                     await userManager.AddToRoleAsync(defaultUser, Roles.Basic.ToString());
                     await userManager.AddToRoleAsync(defaultUser, Roles.Moderator.ToString());
                     await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());

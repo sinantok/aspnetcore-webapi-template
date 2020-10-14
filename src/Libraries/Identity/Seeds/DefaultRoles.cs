@@ -8,7 +8,7 @@ namespace Identity.Seeds
 {
     public static class DefaultRoles
     {
-        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public static async Task SeedAsync(RoleManager<ApplicationRole> roleManager)
         {
             //Seed Roles
             await roleManager.CreateAsync(new ApplicationRole()
