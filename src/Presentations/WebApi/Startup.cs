@@ -18,6 +18,9 @@ using Core.Interfaces;
 using WebApi.Services;
 using GraphiQl;
 using Services.Interfaces;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using HealthChecks.UI.Client;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace WebApi
 {
@@ -41,6 +44,17 @@ namespace WebApi
             services.AddGraphQLServices(Configuration);
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             services.AddControllers();
+
+            services.AddHealthChecks()
+                .AddSqlServer(Configuration.GetConnectionString("IdentityConnection"),
+                name: "identityDb-check",
+                failureStatus: HealthStatus.Unhealthy,
+                tags: new string[] { "api", "SqlDb" })
+                .AddSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                name: "applicationDb-check",
+                failureStatus: HealthStatus.Unhealthy,
+                tags: new string[] { "api", "SqlDb" });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +76,11 @@ namespace WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
             });
         }
     }
