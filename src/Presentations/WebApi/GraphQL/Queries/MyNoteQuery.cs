@@ -1,5 +1,4 @@
-﻿using Core.Interfaces;
-using GraphQL.Types;
+﻿using GraphQL.Types;
 using Services.Interfaces;
 using WebApi.GraphQL.Types.Note;
 

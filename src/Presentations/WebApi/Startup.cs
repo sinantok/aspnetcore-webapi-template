@@ -21,6 +21,7 @@ using Services.Interfaces;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Caching;
 
 namespace WebApi
 {
@@ -42,6 +43,7 @@ namespace WebApi
             services.AddRepoServices(Configuration);
             services.AddAppServices(Configuration);
             services.AddGraphQLServices(Configuration);
+            services.AddRedis(Configuration); //TODO: redisHealtCheck
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             services.AddControllers();
 

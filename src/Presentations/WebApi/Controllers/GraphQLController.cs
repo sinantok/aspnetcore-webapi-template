@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Core.Exceptions;
+﻿using Core.Exceptions;
 using GraphQL;
 using GraphQL.Types;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.ResponseModels;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 using WebApi.GraphQL;
 
 namespace WebApi.Controllers
@@ -28,6 +24,7 @@ namespace WebApi.Controllers
             _schema = schema;
         }
 
+        //[Cached(300)]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] GraphQLQuery query)
         {

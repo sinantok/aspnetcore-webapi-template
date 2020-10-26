@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Caching
+namespace Models.Settings
 {
-    public class RedisConfig
+    public class RedisSettings
     {
         public string RedisDataProtectionKey { get; set; }
         public int CacheTime { get; set; }
