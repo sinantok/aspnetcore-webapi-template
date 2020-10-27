@@ -1,4 +1,5 @@
 ﻿using Data.Repos;
+using Data.UnitOfWork;
 using Models.DbEntities;
 using Services.Interfaces;
 using System.Collections.Generic;
@@ -10,12 +11,14 @@ namespace Services.Concrete
     {
         private readonly IGenericRepository<Note> _repository;
         private readonly IAuthenticatedUserService _authenticatedUserService;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly string _userEmail;
-        public NoteService(IGenericRepository<Note> repository, IAuthenticatedUserService authenticatedUserService)
+        public NoteService(IGenericRepository<Note> repository, IAuthenticatedUserService authenticatedUserService, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _authenticatedUserService = authenticatedUserService;
             _userEmail = _authenticatedUserService.UserEmail;
+            _unitOfWork = unitOfWork;
         }
 
         public bool DeleteNote(int id)
@@ -31,6 +34,8 @@ namespace Services.Concrete
 
         public List<Note> GetAllMyNotes()
         {
+            //UnitofWork Usage Sample
+            //List<Note> notes = _unitOfWork.Repository<Note>().FindAll(x => x.OwnerEmail.Equals(_userEmail));
             return _repository.FindAll(x => x.OwnerEmail.Equals(_userEmail));
         }
 

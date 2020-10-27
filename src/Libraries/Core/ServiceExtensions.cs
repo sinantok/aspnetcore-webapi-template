@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Data.Repos;
 using Services.Interfaces;
 using Services.Concrete;
+using Data.UnitOfWork;
 
 namespace Core
 {
@@ -35,6 +36,8 @@ namespace Core
         public static void AddRepoServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
         public static void AddAppServices(this IServiceCollection services, IConfiguration config)
         {
