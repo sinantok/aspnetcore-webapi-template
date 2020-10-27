@@ -25,7 +25,6 @@ namespace WebApi.Controllers
             _schema = schema;
         }
 
-        //[Cached(300)]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] GraphQLQuery query)
         {

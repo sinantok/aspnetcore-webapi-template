@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.DTOs.Account;
 using Models.Enums;
 using Models.ResponseModels;
+using WebApi.Attributes;
 
 namespace WebApi.Controllers
 {
@@ -27,6 +28,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
+        [Cached(200)]
         [Authorize(Policy = "OnlyAdmins")]
         [HttpGet("alluser")]
         public async Task<IActionResult> GetAllUser()
@@ -38,6 +40,7 @@ namespace WebApi.Controllers
             return Ok(new BaseResponse<IReadOnlyList<UserDto>>(data, $"User List"));
         }
 
+        [Cached(100)]
         [Authorize(Roles = "SuperAdmin")]
         [HttpGet("alluserwithroles")]
         public async Task<IActionResult> GetAllUserWithRoles()
