@@ -42,9 +42,9 @@ namespace WebApi
             services.AddAutoMapper(typeof(MappingProfiles));
 
             services.AddControllers();
-                //.AddNewtonsoftJson(options =>
-                //options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                //);
+            //.AddNewtonsoftJson(options =>
+            //options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            //);
 
             services.AddHealthChecks()
                 .AddSqlServer(Configuration.GetConnectionString("IdentityConnection"),
@@ -55,6 +55,12 @@ namespace WebApi
                 name: "applicationDb-check",
                 failureStatus: HealthStatus.Unhealthy,
                 tags: new string[] { "api", "SqlDb" });
+
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("OnlyAdmins", policy => policy.RequireRole("SuperAdmin", "Admin"));
+            });
 
         }
 
