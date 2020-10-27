@@ -26,6 +26,7 @@ namespace WebApi.GraphQL.Queries
                     int noteId = context.GetArgument<int>("id");
                     return noteService.GetNoteById(noteId);
                 });
+
             Field<ListGraphType<NoteType>>(
                 "my_all_notes_by_category",
                 arguments: new QueryArguments(new QueryArgument<StringGraphType> { Name = "category" }),

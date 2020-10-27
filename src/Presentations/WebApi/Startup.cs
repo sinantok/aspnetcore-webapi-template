@@ -13,7 +13,9 @@ using Microsoft.Extensions.Hosting;
 using Services.Interfaces;
 using WebApi.Extensions;
 using WebApi.GraphQL;
+using WebApi.Helpers;
 using WebApi.Services;
+using AutoMapper;
 
 namespace WebApi
 {
@@ -37,6 +39,8 @@ namespace WebApi
             services.AddGraphQLServices(Configuration);
             services.AddRedis(Configuration); //TODO: redisHealtCheck
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
+            services.AddAutoMapper(typeof(MappingProfiles));
+
             services.AddControllers();
                 //.AddNewtonsoftJson(options =>
                 //options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

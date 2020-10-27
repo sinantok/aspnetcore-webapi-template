@@ -5,6 +5,7 @@ using Identity.Models;
 using Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Models.DTOs.Account;
@@ -201,6 +202,11 @@ namespace Identity.Services.Concrete
             {
                 throw new ApiException($"Error occured while reseting the password. Please try again.");
             }
+        }
+
+        public async Task<List<ApplicationUser>> GetUsers()
+        {
+            return await _userManager.Users.ToListAsync();
         }
 
         private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user, string ipAddress)

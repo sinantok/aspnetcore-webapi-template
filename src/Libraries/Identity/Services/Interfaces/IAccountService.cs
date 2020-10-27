@@ -1,8 +1,7 @@
-﻿using Models.DTOs.Account;
+﻿using Identity.Models;
+using Models.DTOs.Account;
 using Models.ResponseModels;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Identity.Services.Interfaces
@@ -16,5 +15,6 @@ namespace Identity.Services.Interfaces
         Task<BaseResponse<string>> ResetPasswordAsync(ResetPasswordRequest request);
         Task<BaseResponse<AuthenticationResponse>> RefreshTokenAsync(RefreshTokenRequest request);
         Task<BaseResponse<string>> LogoutAsync(string userEmail);
+        Task<List<ApplicationUser>> GetUsers();
     }
 }

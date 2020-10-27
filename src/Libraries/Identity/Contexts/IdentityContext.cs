@@ -31,8 +31,20 @@ namespace Identity.Contexts
             {
                 entity.ToTable(name: "Role");
             });
+
             builder.Entity<ApplicationUserRole>(entity =>
             {
+                entity.HasKey(ur => new { ur.UserId, ur.RoleId });
+
+                entity.HasOne(ur => ur.Role)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+
+                entity.HasOne(ur => ur.User)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
                 entity.ToTable("UserRoles");
             });
 
