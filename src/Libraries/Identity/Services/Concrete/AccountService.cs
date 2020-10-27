@@ -206,7 +206,9 @@ namespace Identity.Services.Concrete
 
         public async Task<List<ApplicationUser>> GetUsers()
         {
-            return await _userManager.Users.ToListAsync();
+            //return await _userManager.Users.ToListAsync();
+
+            return await _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).ToListAsync(); //lazzyloading
         }
 
         private async Task<JwtSecurityToken> GenerateJWToken(ApplicationUser user, string ipAddress)

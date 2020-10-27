@@ -28,11 +28,27 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetAllUser()
         {
             var userList = await _accountService.GetUsers();
-
             var data = _mapper
                 .Map<IReadOnlyList<ApplicationUser>, IReadOnlyList<UserDto>>(userList);
 
             return Ok(new BaseResponse<IReadOnlyList<UserDto>>(data, $"User List"));
+        }
+
+        [HttpGet("alluserwithroles")]
+        public async Task<IActionResult> GetAllUserWithRoles()
+        {
+            var userList = await _accountService.GetUsers();
+
+            var result = userList.Select(x => new UserDto
+            {
+                Email = x.Email,
+                UserName = x.UserName,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Roles = x.UserRoles.ToList().Select(y => y.Role.Name.ToString()).ToList()
+            });
+
+            return Ok(new BaseResponse<IEnumerable<UserDto>>(result, $"User List"));
         }
     }
 }
