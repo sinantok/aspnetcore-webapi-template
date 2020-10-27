@@ -28,7 +28,7 @@ namespace WebApi.Controllers
             _mapper = mapper;
         }
 
-        [Cached(200)]
+        [Cached(2)]
         [Authorize(Policy = "OnlyAdmins")]
         [HttpGet("alluser")]
         public async Task<IActionResult> GetAllUser()
@@ -40,7 +40,7 @@ namespace WebApi.Controllers
             return Ok(new BaseResponse<IReadOnlyList<UserDto>>(data, $"User List"));
         }
 
-        [Cached(100)]
+        [Cached(1)]
         [Authorize(Roles = "SuperAdmin")]
         [HttpGet("alluserwithroles")]
         public async Task<IActionResult> GetAllUserWithRoles()
