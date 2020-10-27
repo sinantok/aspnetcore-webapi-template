@@ -1,27 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Caching;
+using Core;
+using GraphiQl;
+using HealthChecks.UI.Client;
+using Identity;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Identity;
-using WebApi.Extensions;
-using Core;
-using WebApi.GraphQL;
-using Core.Interfaces;
-using WebApi.Services;
-using GraphiQl;
-using Services.Interfaces;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using HealthChecks.UI.Client;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Caching;
+using Microsoft.Extensions.Hosting;
+using Services.Interfaces;
+using WebApi.Extensions;
+using WebApi.GraphQL;
+using WebApi.Services;
 
 namespace WebApi
 {
@@ -46,6 +38,9 @@ namespace WebApi
             services.AddRedis(Configuration); //TODO: redisHealtCheck
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             services.AddControllers();
+                //.AddNewtonsoftJson(options =>
+                //options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                //);
 
             services.AddHealthChecks()
                 .AddSqlServer(Configuration.GetConnectionString("IdentityConnection"),

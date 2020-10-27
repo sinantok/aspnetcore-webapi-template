@@ -1,9 +1,8 @@
 ﻿using Data.Repos;
 using Models.DbEntities;
 using Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Services.Concrete
 {
@@ -33,6 +32,11 @@ namespace Services.Concrete
         public List<Note> GetAllMyNotes()
         {
             return _repository.FindAll(x => x.OwnerEmail.Equals(_userEmail));
+        }
+
+        public async Task<List<Note>> GetAllMyNotesAsync()
+        {
+            return await _repository.FindAllAsync(x => x.OwnerEmail.Equals(_userEmail));
         }
 
         public Note GetNoteById(int id)

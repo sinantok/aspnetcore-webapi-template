@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Data.Repos
 {
@@ -46,6 +46,11 @@ namespace Data.Repos
         public List<T> FindAll(Expression<Func<T, bool>> match)
         {
             return _context.Set<T>().Where(match).ToList();
+        }
+
+        public async Task<List<T>> FindAllAsync(Expression<Func<T, bool>> match)
+        {
+            return await _context.Set<T>().Where(match).ToListAsync();
         }
 
         public List<T> GetAll()

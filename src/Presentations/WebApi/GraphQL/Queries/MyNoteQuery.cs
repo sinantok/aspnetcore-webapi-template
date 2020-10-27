@@ -1,4 +1,5 @@
-﻿using GraphQL.Types;
+﻿using Caching;
+using GraphQL.Types;
 using Services.Interfaces;
 using WebApi.GraphQL.Types.Note;
 
@@ -6,11 +7,16 @@ namespace WebApi.GraphQL.Queries
 {
     public class MyNoteQuery : ObjectGraphType
     {
-        public MyNoteQuery(INoteService noteService)
+        public MyNoteQuery(INoteService noteService, ICacheManager cacheManager, IAuthenticatedUserService authenticatedUserService)
         {
             Field<ListGraphType<NoteType>>(
                 "my_all_notes",
-                resolve: context => noteService.GetAllMyNotes());
+                resolve: context =>
+                {
+                    string cacheKey = $"my_all_notes_{authenticatedUserService.UserEmail}";
+                    var data = cacheManager.Get(cacheKey, () => { return noteService.GetAllMyNotes(); });
+                    return data;
+                });
 
             Field<NoteType>(
                 "note_by_id",

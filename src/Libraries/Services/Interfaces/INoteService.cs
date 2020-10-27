@@ -1,7 +1,6 @@
 ﻿using Models.DbEntities;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
@@ -11,6 +10,7 @@ namespace Services.Interfaces
         Note GetNoteById(int id);
         List<Note> GetNotesByCategory(string category);
         List<Note> GetAllMyNotes();
+        Task<List<Note>> GetAllMyNotesAsync();
         bool DeleteNote(int id);
     }
 }
