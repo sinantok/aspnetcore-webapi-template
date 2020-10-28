@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Identity.Seeds;
+using Serilog;
+using Serilog.Events;
+
 namespace WebApi
 {
     public class Program
@@ -21,6 +24,36 @@ namespace WebApi
             {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+                var configuration = services.GetRequiredService<IConfiguration>();
+                //--------------------------------------------------------------------------------
+                Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .Enrich.WithProperty("Application", "WebApi")
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                // .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.Console()
+                .WriteTo.Seq(configuration.GetSection("Logging:Seq:Url").Value)
+                //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(""))
+                //{
+                //    AutoRegisterTemplate = true,
+                //    OverwriteTemplate = true,
+                //    DetectElasticsearchVersion = true,
+                //    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                //    NumberOfReplicas = 1,
+                //    IndexFormat = "serilog-application-{0:yyyy.MM.dd}",
+                //    NumberOfShards = 2,
+                //    RegisterTemplateFailure = RegisterTemplateRecovery.FailSink,
+                //    FailureCallback = e => Console.WriteLine("Unable to submit event " + e.MessageTemplate),
+                //    EmitEventFailure = EmitEventFailureHandling.WriteToSelfLog |
+                //                       EmitEventFailureHandling.WriteToFailureSink |
+                //                       EmitEventFailureHandling.RaiseCallback
+
+                //})
+                .MinimumLevel.Verbose()
+                .CreateLogger();
+
+                //--------------------------------------------------------------------------------
                 try
                 {
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
@@ -28,10 +61,22 @@ namespace WebApi
                     await DefaultRoles.SeedAsync(roleManager);
                     await DefaultSuperAdmin.SeedAsync(userManager);
                 }
-                catch (Exception ex) { }
+                catch { }
                 finally { }
             }
-            host.Run();
+            try
+            {
+                Log.Information("Application Start");
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+
+                Log.Fatal(ex, "Application Start-up Failed");
+            }
+
+
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

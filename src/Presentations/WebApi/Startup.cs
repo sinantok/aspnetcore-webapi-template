@@ -16,6 +16,8 @@ using WebApi.GraphQL;
 using WebApi.Helpers;
 using WebApi.Services;
 using AutoMapper;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace WebApi
 {
@@ -31,6 +33,7 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(o => o.AddSerilog());
             services.AddIdentity(Configuration);
             services.AddSharedServices(Configuration);
             services.AddApplicationSqlServer(Configuration);
@@ -72,12 +75,15 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //app.UseSerilogRequestLogging();
+            loggerFactory.AddSerilog();
 
             app.UseHttpsRedirection();
 
