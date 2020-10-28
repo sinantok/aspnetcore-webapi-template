@@ -47,10 +47,17 @@ namespace WebApi
             //);
 
             services.AddHealthChecks()
+
+                .AddRedis(Configuration.GetSection("RedisSettings:RedisConnectionString").Value,
+                name: "RedisHealt-check",
+                failureStatus: HealthStatus.Unhealthy,
+                tags: new string[] { "api", "Redis" })
+
                 .AddSqlServer(Configuration.GetConnectionString("IdentityConnection"),
                 name: "identityDb-check",
                 failureStatus: HealthStatus.Unhealthy,
                 tags: new string[] { "api", "SqlDb" })
+
                 .AddSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                 name: "applicationDb-check",
                 failureStatus: HealthStatus.Unhealthy,
