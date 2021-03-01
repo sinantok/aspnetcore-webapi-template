@@ -43,6 +43,7 @@ namespace WebApi
             services.AddRedis(Configuration); //TODO: redisHealtCheck
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddCustomSwagger(Configuration);
 
             services.AddControllers();
             //.AddNewtonsoftJson(options =>
@@ -93,6 +94,8 @@ namespace WebApi
             app.UseAuthorization();
             app.UseErrorHandlingMiddleware();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Service Api V1"); });
 
             app.UseEndpoints(endpoints =>
             {
