@@ -46,7 +46,7 @@ namespace Identity.Services.Concrete
         }
         public async Task<BaseResponse<AuthenticationResponse>> AuthenticateAsync(AuthenticationRequest request)
         {
-            ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
+            ApplicationUser user = await _userManager.FindByEmailAsync(request.Email.Trim());
             if (user == null)
             {
                 throw new ApiException($"You are not registered with '{request.Email}'.") { StatusCode = (int)HttpStatusCode.BadRequest };
