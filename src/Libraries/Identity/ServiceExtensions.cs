@@ -12,9 +12,9 @@ using Identity.Services.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using Models.ResponseModels;
 using Models.Settings;
+using Newtonsoft.Json;
 
 namespace Identity
 {

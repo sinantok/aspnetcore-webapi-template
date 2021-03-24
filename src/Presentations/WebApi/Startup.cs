@@ -40,7 +40,7 @@ namespace WebApi
             services.AddRepoServices(Configuration);
             services.AddAppServices(Configuration);
             services.AddGraphQLServices(Configuration);
-            services.AddRedis(Configuration); //TODO: redisHealtCheck
+            services.AddRedis(Configuration);
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddCustomSwagger(Configuration);
