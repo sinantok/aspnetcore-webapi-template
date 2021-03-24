@@ -26,9 +26,9 @@ namespace Data.Repos
                 _context.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                return false;
             }
         }
 
