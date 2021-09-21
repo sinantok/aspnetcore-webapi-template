@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Models.Settings
+﻿namespace Models.Settings
 {
     public class RedisSettings
     {

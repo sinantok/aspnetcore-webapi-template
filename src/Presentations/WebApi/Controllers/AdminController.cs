@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Identity.Models;
 using Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTOs.Account;
-using Models.Enums;
 using Models.ResponseModels;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using WebApi.Attributes;
 
 namespace WebApi.Controllers

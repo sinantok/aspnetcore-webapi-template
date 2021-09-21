@@ -1,5 +1,4 @@
-﻿
-namespace Models.Settings
+﻿namespace Models.Settings
 {
     public class JWTSettings
     {

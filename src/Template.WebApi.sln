@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity", "Libraries\Ident
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Libraries\Core\Core.csproj", "{83DCD3AE-695F-4362-92DC-E7A43A3ECB5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caching", "Libraries\Caching\Caching.csproj", "{C0A5E261-4D9F-410E-A2C6-112CD9D874C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caching", "Libraries\Caching\Caching.csproj", "{C0A5E261-4D9F-410E-A2C6-112CD9D874C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

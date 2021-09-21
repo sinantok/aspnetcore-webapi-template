@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Identity.Services.Interfaces;
+﻿using Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTOs.Account;
+using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {

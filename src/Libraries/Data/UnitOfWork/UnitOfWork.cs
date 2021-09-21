@@ -1,10 +1,8 @@
 ﻿using Data.Contexts;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections;
 using Data.Repos;
 using Models.DbEntities;
+using System;
+using System.Collections;
 using System.Threading.Tasks;
 
 namespace Data.UnitOfWork

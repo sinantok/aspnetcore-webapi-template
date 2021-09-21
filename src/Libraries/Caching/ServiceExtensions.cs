@@ -2,9 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Models.Settings;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Caching
 {

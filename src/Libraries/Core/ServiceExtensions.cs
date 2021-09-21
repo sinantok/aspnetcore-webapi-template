@@ -1,16 +1,15 @@
 ﻿using Core.Interfaces;
 using Core.Services;
 using Data.Contexts;
-using Models.Settings;
-using System;
+using Data.Repos;
+using Data.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Data.Repos;
-using Services.Interfaces;
-using Services.Concrete;
-using Data.UnitOfWork;
 using Microsoft.OpenApi.Models;
+using Models.Settings;
+using Services.Concrete;
+using Services.Interfaces;
 using System.Collections.Generic;
 
 namespace Core

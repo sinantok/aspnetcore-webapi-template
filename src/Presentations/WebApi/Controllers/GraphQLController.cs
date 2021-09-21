@@ -8,7 +8,6 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using WebApi.GraphQL;
-using WebApi.Attributes;
 
 namespace WebApi.Controllers
 {

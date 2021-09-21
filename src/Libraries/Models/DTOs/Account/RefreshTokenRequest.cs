@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Models.DTOs.Account
+﻿namespace Models.DTOs.Account
 {
     public class RefreshTokenRequest
     {

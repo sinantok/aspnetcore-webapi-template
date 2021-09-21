@@ -2,10 +2,6 @@
 using GraphQL.Types;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebApi.GraphQL.Mutations;
 using WebApi.GraphQL.Queries;
 using WebApi.GraphQL.Types.Note;

@@ -1,20 +1,19 @@
 ﻿using Identity.Contexts;
+using Identity.Models;
+using Identity.Services.Concrete;
+using Identity.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Identity.Models;
-using Microsoft.AspNetCore.Identity;
-using Identity.Services.Interfaces;
-using Identity.Services.Concrete;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Http;
 using Models.ResponseModels;
 using Models.Settings;
 using Newtonsoft.Json;
+using System;
+using System.Text;
 
 namespace Identity
 {

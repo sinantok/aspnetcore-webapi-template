@@ -1,8 +1,6 @@
 ﻿using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace Caching
 {

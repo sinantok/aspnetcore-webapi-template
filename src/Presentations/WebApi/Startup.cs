@@ -10,14 +10,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Services.Interfaces;
 using WebApi.Extensions;
 using WebApi.GraphQL;
 using WebApi.Helpers;
 using WebApi.Services;
-using AutoMapper;
-using Serilog;
-using Microsoft.Extensions.Logging;
 
 namespace WebApi
 {

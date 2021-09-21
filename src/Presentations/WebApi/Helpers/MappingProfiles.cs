@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Identity.Models;
 using Models.DTOs.Account;
-using System.Collections.Generic;
 
 namespace WebApi.Helpers
 {

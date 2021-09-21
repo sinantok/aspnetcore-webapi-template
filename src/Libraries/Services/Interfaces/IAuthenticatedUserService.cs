@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Services.Interfaces
+﻿namespace Services.Interfaces
 {
     public interface IAuthenticatedUserService
     {
