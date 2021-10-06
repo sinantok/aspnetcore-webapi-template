@@ -38,44 +38,63 @@ namespace Data.Mongo.Repo
         public async Task AddAsync(T entity)
             => await Collection.InsertOneAsync(entity);
 
-        public Task DeleteAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task DeleteAsync(string id)
+            => await Collection.DeleteOneAsync(e => e.Id == id);
 
-        public Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
+            => await Collection.Find(predicate).AnyAsync();
 
+        /// <summary>
+        /// Not Async
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+            => Collection.Find(predicate).ToList();
 
-        public Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
+            => await Collection.Find(predicate).ToListAsync();
 
-        public Task<ICollection<T>> FindDistinctAsync(string field, FilterDefinition<T> filter)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<ICollection<T>> FindDistinctAsync(string field, FilterDefinition<T> filter)
+            => (ICollection<T>)await Collection.DistinctAsync<T>(field, filter);
 
-        public Task<T> GetAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<T> GetByIdAsync(string id)
+            => await GetAsync(e => e.Id == id);
 
-        public Task<T> GetAsync(Expression<Func<T, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public async Task<T> GetAsync(Expression<Func<T, bool>> predicate)
+            => await Collection.Find(predicate).SingleOrDefaultAsync();
 
-        public Task UpdateAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public async Task UpdateAsync(T entity)
+            => await Collection.ReplaceOneAsync(e => e.Id == entity.Id, entity);
     }
 }

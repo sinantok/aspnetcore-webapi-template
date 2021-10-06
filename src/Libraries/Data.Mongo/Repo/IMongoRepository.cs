@@ -14,7 +14,7 @@ namespace Data.Mongo.Repo
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<T> GetAsync(string id);
+        Task<T> GetByIdAsync(string id);
 
         /// <summary>
         /// 
