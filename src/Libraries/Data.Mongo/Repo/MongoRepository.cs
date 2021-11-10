@@ -96,5 +96,12 @@ namespace Data.Mongo.Repo
         /// <returns></returns>
         public async Task UpdateAsync(T entity)
             => await Collection.ReplaceOneAsync(e => e.Id == entity.Id, entity);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<T> GetAll()
+            => Collection.Find(Builders<T>.Filter.Empty).ToList();
     }
 }

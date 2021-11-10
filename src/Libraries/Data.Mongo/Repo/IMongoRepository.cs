@@ -71,5 +71,11 @@ namespace Data.Mongo.Repo
         /// <param name="filter"></param>
         /// <returns></returns>
         Task<ICollection<T>> FindDistinctAsync(string field, FilterDefinition<T> filter);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<T> GetAll();
     }
 }
