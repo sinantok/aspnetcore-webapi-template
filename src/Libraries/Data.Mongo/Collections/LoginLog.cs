@@ -9,6 +9,6 @@ namespace Data.Mongo.Collections
     public class LoginLog : MongoBaseDocument
     {
         public string UserEmail { get; set; }
-        public DateTime LoginDate { get; set; }
+        public DateTime LoginTime { get; set; }
     }
 }

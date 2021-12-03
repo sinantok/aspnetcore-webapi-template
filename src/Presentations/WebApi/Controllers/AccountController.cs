@@ -1,7 +1,11 @@
-﻿using Identity.Services.Interfaces;
+﻿using Data.Mongo.Collections;
+using Identity.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTOs.Account;
+using Services.Interfaces;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebApi.Controllers
@@ -11,15 +15,29 @@ namespace WebApi.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService)
+        private readonly ILoginLogService _loginLogService;
+        public AccountController(IAccountService accountService, ILoginLogService loginLogService)
         {
             _accountService = accountService;
+            _loginLogService = loginLogService;
         }
 
         [HttpPost("authenticate")]
         public async Task<IActionResult> AuthenticateAsync(AuthenticationRequest request)
         {
-            return Ok(await _accountService.AuthenticateAsync(request));
+            //auth
+            var result = await _accountService.AuthenticateAsync(request);
+            if (!result.Errors.Any())
+            {
+                //mongo usage example
+                LoginLog log = new LoginLog()
+                {
+                    LoginTime = DateTime.Now,
+                    UserEmail = request.Email
+                };
+                await _loginLogService.Add(log);
+            }
+            return Ok(result);
         }
 
         [HttpPost("register")]

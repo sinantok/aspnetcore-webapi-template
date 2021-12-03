@@ -1,5 +1,6 @@
 using Caching;
 using Core;
+using Data.Mongo;
 using GraphiQl;
 using HealthChecks.UI.Client;
 using Identity;
@@ -32,6 +33,7 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMongo(Configuration);
             services.AddLogging(o => o.AddSerilog());
             services.AddIdentity(Configuration);
             services.AddSharedServices(Configuration);
@@ -91,6 +93,8 @@ namespace WebApi
             app.UseGraphiQl();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //error middleware
             app.UseErrorHandlingMiddleware();
 
             app.UseSwagger();
