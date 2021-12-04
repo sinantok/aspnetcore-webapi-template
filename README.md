@@ -1,12 +1,13 @@
 
+
 # ASP.NET Core Web Api Template
  
-This project is an Web API Open-Source Boilerplate Template that includes ASP.NET Core 5, Web API standards, clean n-tier architecture, GraphQL service, and User Auditing (Identity) with a lot of best practices.
+This project is an Web API Open-Source Boilerplate Template that includes ASP.NET Core 5, Web API standards, clean n-tier architecture, GraphQL service, Redis, Mssql, Mongo databases and User Auditing (Identity) with a lot of best practices.
 
 ## Releases
-v1.0
+v1.0, v2.0, v3.0
 
-## v1.0
+## v3.0
 
 Follow these steps to get started with this Boilerplate Template.
 
@@ -20,7 +21,7 @@ Follow these Steps to get started.
 
 You Solution Template is Ready!
 
-![enter image description here](https://i.hizliresim.com/6nXeou.png)
+![enter image description here](https://i.hizliresim.com/o9t66ud.PNG)
 
 ### Alternatively you can also clone the [Repository](https://github.com/sinantok/aspnetcore-webapi-template).
 
@@ -34,7 +35,7 @@ You Solution Template is Ready!
 
 ### Swagger
 You can view endpoints with swagger
-![enter image description here](https://i.hizliresim.com/WouTie.png)
+![enter image description here](https://i.hizliresim.com/3jyeib7.PNG)
 
 ### HealthCheck
 You can check the status of the services with HealthCheck
@@ -58,6 +59,15 @@ You can use these default credentials to generate valid JWTokens at the ../api/a
 - .NET Core 5
 - REST Standards
 - GraphQL
+- MSSQL
+- MongoDB
+- Microsoft Identity
+- Redis
+- SeriLog(seq)
+- AutoMapper
+- Smtp / Mailkit
+- Swagger Open Api
+- Health Checks
 
 ## Features
 - [x] Net Core
@@ -86,6 +96,7 @@ You can use these default credentials to generate valid JWTokens at the ../api/a
 - [ ] Fluent Validation
 - [ ] Unit Test
 - [x] .Net 5 migration
+- [x] MongoDb Operations
 
 ## Purpose of this Project
 
