@@ -15,7 +15,6 @@ namespace Models.ResponseModels
         public BaseResponse(string message)
         {
             Message = message;
-            Succeeded = false;
         }
         public bool Succeeded;
         public string Message { get; set; }

@@ -7,6 +7,6 @@ namespace Services.Interfaces
     public interface ILoginLogService
     {
         Task Add(LoginLog model);
-        Task<List<LoginLog>> Get();
+        Task<List<LoginLog>> Get(string email);
     }
 }

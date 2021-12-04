@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Data.Mongo.Collections;
+using Microsoft.AspNetCore.Mvc;
 using Models.DTOs.Log;
 using Models.ResponseModels;
 using Services.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {
@@ -11,18 +14,21 @@ namespace WebApi.Controllers
     public class LogController : ControllerBase
     {
         private readonly ILoginLogService _loginLogService;
-        public LogController( ILoginLogService loginLogService)
+        private readonly IMapper _mapper;
+        public LogController( ILoginLogService loginLogService, IMapper mapper)
         {
             _loginLogService = loginLogService;
+            _mapper = mapper;
         }
+
         [HttpGet("get")]
-        public IActionResult GetUserAuthLogs(string email)
+        public async Task<IActionResult> GetUserAuthLogs(string email)
         {
-            return Ok(new BaseResponse<IReadOnlyList<LogDto>>(null, $"User Log List"));
-        }
-        public IActionResult Index()
-        {
-            return Content("");
+            var userList = await _loginLogService.Get(email);
+            var data = _mapper
+                .Map<IReadOnlyList<LoginLog>, IReadOnlyList<LogDto>>(userList);
+
+            return Ok(new BaseResponse<IReadOnlyList<LogDto>>(data, $"User Log List"));
         }
     }
 }

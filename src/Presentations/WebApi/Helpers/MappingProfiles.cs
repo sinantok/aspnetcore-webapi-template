@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Data.Mongo.Collections;
 using Identity.Models;
 using Models.DTOs.Account;
+using Models.DTOs.Log;
 
 namespace WebApi.Helpers
 {
@@ -13,6 +15,10 @@ namespace WebApi.Helpers
                 .ForMember(d => d.FirstName, o => o.MapFrom(s => s.FirstName))
                 .ForMember(d => d.LastName, o => o.MapFrom(s => s.LastName))
                 .ForMember(d => d.Email, o => o.MapFrom(s => s.Email));
+
+            CreateMap<LoginLog, LogDto>()
+               .ForMember(d => d.UserEmail, o => o.MapFrom(s => s.UserEmail))
+               .ForMember(d => d.LoginTime, o => o.MapFrom(s => s.LoginTime));
         }
     }
 }

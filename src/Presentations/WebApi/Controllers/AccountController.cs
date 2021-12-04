@@ -27,7 +27,7 @@ namespace WebApi.Controllers
         {
             //auth
             var result = await _accountService.AuthenticateAsync(request);
-            if (!result.Errors.Any())
+            if (result.Errors == null || !result.Errors.Any())
             {
                 //mongo usage example
                 LoginLog log = new LoginLog()

@@ -43,6 +43,8 @@ namespace Core
         public static void AddAppServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddTransient<INoteService, NoteService>();
+
+            services.AddTransient<ILoginLogService, LoginLogService>();
         }
         public static void AddCustomSwagger(this IServiceCollection services, IConfiguration config)
         {
