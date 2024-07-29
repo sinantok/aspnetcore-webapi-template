@@ -33,6 +33,10 @@ namespace Core
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
             services.AddTransient<IDbContext, ApplicationDbContext>();
+            
+            // Ensure the database is created.
+            using var context = services.BuildServiceProvider().GetService<ApplicationDbContext>();
+            context.Database.EnsureCreated();
         }
         public static void AddRepoServices(this IServiceCollection services, IConfiguration config)
         {
