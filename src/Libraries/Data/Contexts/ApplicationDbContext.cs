@@ -27,11 +27,11 @@ namespace Data.Contexts
             foreach (var item in typeConfigurations)
             {
                 var configuration = (IMappingConfiguration)Activator.CreateInstance(item);
-                configuration.ApplyConfiguration(modelBuilder);
+                configuration!.ApplyConfiguration(modelBuilder);
             }
         }
 
-        public virtual new DbSet<TEntity> Set<TEntity>() where TEntity : class
+        public new virtual DbSet<TEntity> Set<TEntity>() where TEntity : class
         {
             return base.Set<TEntity>();
         }

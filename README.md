@@ -97,6 +97,7 @@ You can use these default credentials to generate valid JWTokens at the ../api/a
 - [ ] Unit Test
 - [x] .Net 8 migration
 - [x] MongoDb Operations
+- [x] Docker Support `docker-compose.yml` and `Dockerfile`
 
 ## Purpose of this Project
 
