@@ -7,7 +7,7 @@ This project is an Web API Open-Source Boilerplate Template that includes ASP.NE
 ## Releases
 v1.0, v2.0, v3.0
 
-## v3.0
+## v4.0
 
 Follow these steps to get started with this Boilerplate Template.
 
@@ -55,8 +55,8 @@ Here are the credentials for the default user.
 You can use these default credentials to generate valid JWTokens at the ../api/account/authenticate endpoint.
 
 ## Technologies
-- ASP.NET Core 5 WebApi
-- .NET Core 5
+- .Net 8 WebApi
+- .NET 8
 - REST Standards
 - GraphQL
 - MSSQL
@@ -70,7 +70,7 @@ You can use these default credentials to generate valid JWTokens at the ../api/a
 - Health Checks
 
 ## Features
-- [x] Net Core
+- [x] Net 8
 - [x] N-Tier Architecture
 - [x] Restful
 - [x] GraphQl
@@ -95,7 +95,7 @@ You can use these default credentials to generate valid JWTokens at the ../api/a
 - [ ] Refit
 - [ ] Fluent Validation
 - [ ] Unit Test
-- [x] .Net 5 migration
+- [x] .Net 8 migration
 - [x] MongoDb Operations
 
 ## Purpose of this Project
@@ -104,7 +104,7 @@ This template project has been developed to ensure that the necessary structures
 
 ## Prerequisites
 - Visual Studio 2019 Community and above
-- .NET Core 5 SDK and above
+- .NET 8 SDK and above
 - Basic Understanding of Architectures and Clean Code Principles
 
 ## Give a Star ⭐️
