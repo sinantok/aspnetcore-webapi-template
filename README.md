@@ -2,10 +2,10 @@
 
 # ASP.NET Core Web Api Template
  
-This project is an Web API Open-Source Boilerplate Template that includes ASP.NET Core 5, Web API standards, clean n-tier architecture, GraphQL service, Redis, Mssql, Mongo databases and User Auditing (Identity) with a lot of best practices.
+This project is an Web API Open-Source Boilerplate Template that includes Net 8, Web API standards, clean n-tier architecture, GraphQL service, Redis, Mssql, Mongo databases and User Auditing (Identity) with a lot of best practices.
 
 ## Releases
-v1.0, v2.0, v3.0
+v1.0, v2.0, v3.0, v4.0
 
 ## v4.0
 

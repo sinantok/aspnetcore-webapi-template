@@ -1,25 +1,44 @@
-name: .NET Core
+name: build
 
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
+    
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
-
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 3.1.301
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+        dotnet-version: '8.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore ./src/Presentations/WebApi/WebApi.csproj --verbosity minimal
+      
+    - name: Build solution
+      run: dotnet build ./src/Presentations/WebApi/WebApi.csproj -c Release --verbosity minimal
+
+    - name: Run tests
+      run: dotnet test ./src/Presentations/WebApi/WebApi.csproj -c Release --verbosity minimal --no-build --no-restore
+      
+    - name: Publish
+      run: dotnet publish ./src/Presentations/WebApi/WebApi.csproj -c Release --no-build --no-restore
+
+    - name: Upload Core artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Core
+        path: ./Publish/Core
