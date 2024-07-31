@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "ahernand53",
+    "classifications": ["Web", "Api"],
+    "name": "Web API Repository Pattern",
+    "sourceName": "WebApi",
+    "shortName": "webapirepository",
+    "identity": "WebApi",
+    "tags": {
+      "language": "C#",
+      "type": "project"
+    },
+    "description": "Creates a Web API project with a repository pattern or Unit of Work pattern.",
+    "preferNameDirectory": true
+}
