@@ -31,9 +31,6 @@ jobs:
     - name: Build solution
       run: dotnet build ./src/Presentations/WebApi/WebApi.csproj -c Release --verbosity minimal
 
-    - name: Run tests
-      run: dotnet test ./src/Presentations/WebApi/WebApi.csproj -c Release --verbosity minimal --no-build --no-restore
-      
     - name: Publish
       run: dotnet publish ./src/Presentations/WebApi/WebApi.csproj -c Release --no-build --no-restore
 

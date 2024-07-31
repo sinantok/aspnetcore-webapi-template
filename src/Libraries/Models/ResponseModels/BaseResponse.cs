@@ -11,6 +11,7 @@ namespace Models.ResponseModels
         {
             Message = message;
             Data = data;
+            Succeeded = true;
         }
         public BaseResponse(string message)
         {
