@@ -1,15 +1,15 @@
 ﻿{
   "$schema": "https://json.schemastore.org/template",
-  "author": "ahernand53",
+  "author": "Delta",
     "classifications": ["Web", "Api"],
-    "name": "Web API Repository Pattern",
+    "name": "Web API",
     "sourceName": "WebApi",
-    "shortName": "webapirepository",
+    "shortName": "webapi",
     "identity": "WebApi",
     "tags": {
       "language": "C#",
       "type": "project"
     },
-    "description": "Creates a Web API project with a repository pattern or Unit of Work pattern.",
+    "description": "Creates a Web API project with NET8",
     "preferNameDirectory": true
 }
