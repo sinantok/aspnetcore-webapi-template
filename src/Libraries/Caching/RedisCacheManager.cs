@@ -140,7 +140,7 @@ namespace Caching
                 return;
 
             //set cache time
-            var expiresIn = TimeSpan.FromMinutes(cacheTime);
+            var expiresIn = TimeSpan.FromSeconds(cacheTime);
 
             //serialize item
             var serializedItem = JsonConvert.SerializeObject(data);

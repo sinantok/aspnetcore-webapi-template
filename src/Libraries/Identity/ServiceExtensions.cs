@@ -34,6 +34,10 @@ namespace Identity
                     configuration.GetConnectionString("IdentityConnection"),
                     b => b.MigrationsAssembly(typeof(IdentityContext).Assembly.FullName)));
 
+            // Ensure the database is created. 
+            using var context = services.BuildServiceProvider().GetService<IdentityContext>();
+            context.Database.EnsureCreated();
+            
             services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<IdentityContext>().AddDefaultTokenProviders()
                 .AddTokenProvider("MyApp", typeof(DataProtectorTokenProvider<ApplicationUser>));
 

@@ -1,0 +1,15 @@
+﻿{
+  "$schema": "https://json.schemastore.org/template",
+  "author": "Delta",
+    "classifications": ["Web", "Api"],
+    "name": "Web API",
+    "sourceName": "WebApi",
+    "shortName": "webapi",
+    "identity": "WebApi",
+    "tags": {
+      "language": "C#",
+      "type": "project"
+    },
+    "description": "Creates a Web API project with NET8",
+    "preferNameDirectory": true
+}
